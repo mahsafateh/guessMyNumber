@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, Text, View} from "react-native";
+import {Alert, FlatList, StyleSheet, Text, View} from "react-native";
 import Title from "../components/ui/Title.js";
 import generateRandomGuess from "../utils/generateRandomGuess.js";
 import {useEffect, useState} from "react";
@@ -7,18 +7,26 @@ import PrimaryButton from "../components/ui/PrimaryButton.js";
 import Card from "../components/ui/Card";
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../utils/colors";
+import GuessLogItem from "../components/game/GuessLogItem";
+
+let minBoundary = 1;
+let maxBoundary = 100;
 
 export default function GameScreen({userNumber, onGameOver}) {
-    let minBoundary = 1;
-    let maxBoundary = 100;
     const initialGuess = generateRandomGuess(1, 100, userNumber);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
+    const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
     useEffect(() => {
         if (currentGuess === userNumber) {
             onGameOver();
         }
     }, [currentGuess, userNumber, onGameOver]);
+
+    useEffect(() => {
+        minBoundary = 1
+        maxBoundary = 100
+    }, []);
 
     const nextGuessHandler = (direction) => {
         if (
@@ -43,7 +51,10 @@ export default function GameScreen({userNumber, onGameOver}) {
         );
 
         setCurrentGuess(newRndNumber);
+        setGuessRounds(prevGuessRounds => [newRndNumber, ...prevGuessRounds]);
     };
+
+    const guessRoundsListLength = guessRounds.length;
 
     return (
         <View style={styles.rootScreen}>
@@ -62,6 +73,18 @@ export default function GameScreen({userNumber, onGameOver}) {
                     </PrimaryButton>
                 </View>
             </Card>
+            <View style={styles.listContainer}>
+                <FlatList
+                    data={guessRounds}
+                    renderItem={(itemData) => (
+                        <GuessLogItem
+                            roundNumber={guessRoundsListLength - itemData.index}
+                            guess={itemData.item}
+                        />
+                    )}
+                    keyExtractor={(item) => item}
+                />
+            </View>
         </View>
     );
 }
@@ -88,5 +111,9 @@ const styles = StyleSheet.create({
         marginTop: 50,
         justifyContent: "space-between",
         flexDirection: "row",
+    },
+    listContainer: {
+        flex: 1,
+        padding: 16,
     },
 });
