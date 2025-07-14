@@ -1,21 +1,36 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, ImageBackground } from "react-native";
+import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
 import StartGameScreen from "./screens/StartGameScreen";
 import { LinearGradient } from "expo-linear-gradient";
+import GameOverScreen from "./screens/GameOverScreen";
 import GameScreen from "./screens/GameScreen";
 
 export default function App() {
-  const [userNumber, setUserNumber] = useState(0);
+  const [userNumber, setUserNumber] = useState();
+  const [gameIsOver, setGameIsOver] = useState(true);
 
   function pickedNumberHandler(pickedNumber) {
+    console.log("number is picked, app.js");
     setUserNumber(pickedNumber);
+    setGameIsOver(false);
+  }
+
+  const gameOverHandler = () => {
+    setGameIsOver(true);
   };
 
-  let screen = <StartGameScreen onPickNumber={pickedNumberHandler}/>
+  let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 
-  if(userNumber) {
-    screen = <GameScreen/>
+  if (userNumber) {
+    screen = (
+      <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />
+    );
+  }
+
+  if (gameIsOver && userNumber) {
+    console.log("Imported GameOverScreen:", GameOverScreen);
+    screen = <GameOverScreen />;
   }
 
   return (
@@ -30,7 +45,7 @@ export default function App() {
         imageStyle={styles.backgroundImage}
       >
         <StatusBar style='auto' />
-        {screen}
+        <SafeAreaView style={styles.container}>{screen}</SafeAreaView>
       </ImageBackground>
     </LinearGradient>
   );
