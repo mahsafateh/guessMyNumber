@@ -19,7 +19,7 @@ export default function GameScreen({userNumber, onGameOver}) {
 
     useEffect(() => {
         if (currentGuess === userNumber) {
-            onGameOver();
+            onGameOver(guessRounds.length);
         }
     }, [currentGuess, userNumber, onGameOver]);
 
