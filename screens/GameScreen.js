@@ -5,6 +5,8 @@ import {useEffect, useState} from "react";
 import NumberContainer from "../components/game/NumberContainer.js";
 import PrimaryButton from "../components/ui/PrimaryButton.js";
 import Card from "../components/ui/Card";
+import {Ionicons} from "@expo/vector-icons";
+import Colors from "../utils/colors";
 
 export default function GameScreen({userNumber, onGameOver}) {
     let minBoundary = 1;
@@ -23,7 +25,7 @@ export default function GameScreen({userNumber, onGameOver}) {
             (direction === "lower" && currentGuess < userNumber) ||
             (direction === "greater" && currentGuess > userNumber)
         ) {
-            Alert.alert("Don't misslead me!", "You know that this is wrong ...", [
+            Alert.alert("Don't miss lead me!", "You know that this is wrong ...", [
                 {text: "Sorry!", style: "cancel"},
             ]);
             return;
@@ -53,10 +55,10 @@ export default function GameScreen({userNumber, onGameOver}) {
 
                 <View style={styles.btnContainer}>
                     <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-                        -
+                        <Ionicons name="remove" size={24} color="white"/>
                     </PrimaryButton>
                     <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-                        +
+                        <Ionicons name="add" size={24} color="white"/>
                     </PrimaryButton>
                 </View>
             </Card>
@@ -77,8 +79,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     texts: {
+        fontFamily: "open-sans",
         fontSize: 20,
         alignItems: "center",
+        color: Colors.accent500
     },
     btnContainer: {
         marginTop: 50,
