@@ -16,7 +16,6 @@ export default function GameScreen({ userNumber, onGameOver }) {
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      console.log("current guess and user input is equel");
       onGameOver();
     }
   }, [currentGuess, userNumber, onGameOver]);

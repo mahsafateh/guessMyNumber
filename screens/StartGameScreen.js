@@ -7,7 +7,6 @@ export default function StartGameScreen({ onPickNumber }) {
   const [enteredNumber, setEnteredNumber] = useState("");
 
   const numberInputHandler = (enteredText) => {
-    console.log("text is entered, set enter number, start game screen");
     setEnteredNumber(enteredText);
   };
 

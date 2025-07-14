@@ -11,7 +11,6 @@ export default function App() {
   const [gameIsOver, setGameIsOver] = useState(true);
 
   function pickedNumberHandler(pickedNumber) {
-    console.log("number is picked, app.js");
     setUserNumber(pickedNumber);
     setGameIsOver(false);
   }
